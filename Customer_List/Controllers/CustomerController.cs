@@ -40,7 +40,7 @@ namespace CustomersWebDemo.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return Ok();
         }
 
 
@@ -84,7 +84,7 @@ namespace CustomersWebDemo.Controllers
             ViewData["itemCount"] = itemCount;
             ViewData["currentPage"] = page;
 
-            return PartialView(data);
+            return Ok(data);
         }
 
         public ActionResult Create()
@@ -119,7 +119,7 @@ namespace CustomersWebDemo.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(c);
+            return Ok(c);
         }
 
 
@@ -129,7 +129,7 @@ namespace CustomersWebDemo.Controllers
         {
             
             var customer = _db.Customers.Find(id);
-            return View(customer);
+            return Ok(customer);
 
         }
 
@@ -139,7 +139,7 @@ namespace CustomersWebDemo.Controllers
         public ActionResult Delete(int id)
         {
             var customer = _db.Customers.Find(id);
-            return View(customer);
+            return Ok(customer);
         }
 
        
