@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CustomersWebDemo.Models.Customer>
+
+@{
+    int itemcount = int.Parse(@ViewData["itemCount"].ToString());
+    int currentpage = int.Parse(@ViewData["currentPage"].ToString());
+    int pagesize = int.Parse(@System.Configuration.ConfigurationManager.AppSettings["pageSize"]);
+    int totalpages = (int)Math.Ceiling( (decimal)itemcount / (decimal)pagesize) ;
+
+    string infolabel = "#Records: " + itemcount.ToString() + ", Page: " + (totalpages <= 0?  0 :  currentpage + 1).ToString() + " / " + totalpages.ToString();
+  
+   
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerType)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+       
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.CustomerName, "Details", new { id = item.CustomerID }) 
+                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerTypeDisplayName)
+                    
+                </td>
+
+                <td>
+                  
+
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CustomerID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CustomerID })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+<p>
+    @Html.ActionLink("Create customer", "Create")
+</p>
+
+<p>
+    @Html.Label(infolabel)
+    </p>
+
+
+<ul class="pagination">
+    
+    
+    @if(totalpages > 1)
+    {
+            <li> 
+                <a href="javascript:void(0);" onclick="applyFilter(0);"><<</a>
+            </li>
+            <li> 
+                <a href="javascript:void(0);" onclick="applyFilter( @(currentpage > 1 ? currentpage-1 : 0));"><</a>
+            </li>
+            <li class="active">
+                <a href="javascript:void(0);" >@(currentpage + 1)</a>
+           </li>
+            <li> 
+                <a href="javascript:void(0);" onclick="applyFilter(@(currentpage < totalpages -1? currentpage + 1 : totalpages-1));">></a>
+            </li>
+            <li> 
+                <a href="javascript:void(0);" onclick="applyFilter(@(totalpages-1));">>></a>
+            </li>
+        
+        
+        
+    }
+
+    
+
+    
+    </ul>

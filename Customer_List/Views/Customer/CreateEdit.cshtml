@@ -1,0 +1,120 @@
+﻿@model CustomersWebDemo.Models.Customer
+
+@{
+    
+    if (Model.CustomerID <= 0)
+    {  
+        ViewBag.Title = "Add customer";
+    }
+    else
+    {
+        ViewBag.Title = "Edit customer";
+    }
+
+    List<SelectListItem> selectList = new List<SelectListItem>();
+
+    SelectListItem itemNA = new SelectListItem();
+    itemNA.Text = "N/A";
+    itemNA.Value = "";
+    selectList.Add(itemNA);
+
+    var values = Enum.GetValues(typeof(CustomersWebDemo.Models.CustomerTypeEnum));
+    foreach(Enum v in values)
+    {
+           SelectListItem item = new SelectListItem();
+           item.Text = CustomersWebDemo.DbAccess.EnumNameHelper.GetDisplayName(v);
+           item.Value = v.ToString();
+           selectList.Add(item);
+    }
+        
+    
+            
+}
+
+@section MyScripts {
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#ContractDate").datepicker({ dateFormat: 'mm-dd-yy' });
+    });
+</script>
+
+}
+
+@using (Html.BeginForm("CreateEdit", "Customer", FormMethod.Post, FormMethod.Post, new { @class="form-horizontal", role="form" }))
+{
+    
+    @Html.HiddenFor(model=> model.CustomerID)
+    
+    <fieldset>
+        <legend>@(ViewBag.Title)</legend>
+        
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.CustomerName)</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", } })
+                @Html.ValidationMessageFor(model => model.CustomerName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", } })
+                @Html.ValidationMessageFor(model => model.Email, "Please, enter a valid email address")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Location)</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", } })
+                @Html.ValidationMessageFor(model => model.Location)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Notes)</label>
+            <div class="col-sm-10">
+                @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows =3 })
+                @Html.ValidationMessageFor(model => model.Notes)
+            </div>
+        </div>
+   
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.ContractDate)</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.ContractDate, new { htmlAttributes = new { @class = "form-control", @placeholder="MM-DD-YYYY" } })
+                @Html.ValidationMessageFor(model => model.ContractDate, "Please, enter a valid date - MM-DD-YYYY")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.CustomerType)</label>
+            <div class="col-sm-10">
+                @Html.DropDownListFor(model => model.CustomerType, selectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CustomerType)
+            </div>
+        </div>
+
+        
+        
+            <p class="vertical-gap">
+
+                <input type="submit" class="btn btn-primary" value="Save" />
+                <input type="button" onclick="location.href = '@Url.Action("Index", "Customer")'; return false;" class="btn btn-default" value="Cancel" />
+
+            </p>
+</fieldset>
+}
+<p></p>
+<div>
+    
+ 
+</div>
+
