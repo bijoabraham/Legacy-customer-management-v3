@@ -1,17 +1,17 @@
-﻿using CustomersWebDemo.DbAccess;
+using CustomersWebDemo.DbAccess;
 using CustomersWebDemo.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Web;
 
 
 namespace CustomersWebDemo.DbAccess
 {
-    public class CustomerDatabaseInitializer : DropCreateDatabaseAlways<CustomerEntitiesDbContext>
+    public class CustomerDatabaseInitializer
     {
-        protected override void Seed(CustomerEntitiesDbContext context)
+        public void Seed(CustomerEntitiesDbContext context)
         {
             IList<Customer> seedCustomers = new List<Customer>();
             seedCustomers.Add(new Customer() { CustomerName = "Peter", Email = "peter@peter.com", Location = "Tokio"});
@@ -42,7 +42,7 @@ namespace CustomersWebDemo.DbAccess
             foreach (Customer c in seedCustomers)
                 context.Customers.Add(c);
 
-            base.Seed(context);
+            
         }
     }
 }

@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CustomersWebDemo.Controllers
 {
@@ -25,14 +25,12 @@ namespace CustomersWebDemo.Controllers
     }
     
     
-    protected override void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (disposing)
         {
             _db.Dispose();
         }
-        base.Dispose(disposing);
-      
     }
     
     
@@ -73,7 +71,7 @@ namespace CustomersWebDemo.Controllers
         }
     
         // get page and count info
-        int pageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["pageSize"]);
+        int pageSize = 10;
         int itemCount = query.Count();
     
         // return 1 page of filtered data
@@ -82,10 +80,13 @@ namespace CustomersWebDemo.Controllers
     
         // populate view data variables
     
-        ViewData["itemCount"] = itemCount;
-        ViewData["currentPage"] = page;
+        var response = new {
+            ItemCount = itemCount,
+            CurrentPage = page,
+            Data = data
+        };
     
-        return Ok(data);
+        return Ok(response);
     }
     
     public IActionResult Create()
