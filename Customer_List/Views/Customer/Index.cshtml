@@ -1,0 +1,95 @@
+﻿@model IEnumerable<CustomersWebDemo.Models.Customer>
+@{
+
+    ViewBag.Title = "Customer list";
+
+}
+
+
+@section MyScripts {
+
+    <script type="text/javascript">
+
+        $('#keywordName').on('input', function () {
+            $('#keywordType').val("");
+            $('#keywordEmail').val("");
+            $('#keywordLocation').val("");
+
+            applyFilter(0);
+        });
+
+        $('#keywordEmail').on('input', function () {
+            
+            $('#keywordType').val("");
+            $('#keywordName').val("");
+            $('#keywordLocation').val("");
+
+            applyFilter(0);
+        });
+
+        $('#keywordLocation').on('input', function () {
+            $('#keywordType').val("");
+            $('#keywordEmail').val("");
+            $('#keywordName').val("");
+
+            applyFilter(0);
+        });
+
+        jQuery('#keywordType').on('change', function () {
+            $('#keywordName').val("");
+            $('#keywordEmail').val("");
+            $('#keywordLocation').val("");
+            applyFilter( 0);
+        });
+
+        function applyFilter(pageNumber) {
+            $.ajax({
+                url: '@Url.Action("Filter", "Customer")',
+                data: { nameFilter: $('#keywordName').val(), emailFilter: $('#keywordEmail').val(),
+                    locationFilter: $('#keywordLocation').val(), typeFilter: $('#keywordType').val(), page: pageNumber },
+                cache: false,
+                type: "POST",
+                dataType: "html",
+                success: function (data, textStatus, XMLHttpRequest) {
+
+                    $("#gridPlaceholder").html(data);
+
+                }
+
+            });
+
+        };
+
+    </script>
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Filter"))
+{
+
+
+
+    <div style="margin-top:20px;margin-bottom:10px;">
+
+        @Html.Label("Filters:")
+        <input id="keywordName" type="text" placeholder="@Html.DisplayNameFor(model=> model.CustomerName)...">
+        <input id="keywordEmail" type="text" placeholder="@Html.DisplayNameFor(model => model.Email)...">
+        <input id="keywordLocation" type="text" placeholder="@Html.DisplayNameFor(model => model.Location)...">
+        <select id="keywordType">
+            <option value="">@Html.DisplayNameFor(model => model.CustomerType)</option>
+            <option value="0">Person</option>
+            <option value="1">Corporation</option>
+        </select>
+
+    </div>
+
+
+    <div id="gridPlaceholder">
+        @Html.Action("Filter", new { nameFilter = "", emailFilter = "", locationFilter = "", typeFilter = "", page = "0" })
+    </div>
+
+
+}
+

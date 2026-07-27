@@ -1,0 +1,74 @@
+﻿@model CustomersWebDemo.Models.Customer
+
+
+@{
+    ViewBag.Title = "Customer details";
+}
+
+
+<fieldset>
+    <legend>@(ViewBag.Title)</legend>
+    
+    <div class="row">
+        <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.CustomerName)</label>
+        <div class="col-sm-10">
+            @Html.DisplayTextFor(model => model.CustomerName)
+            
+           
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+        <div class="col-sm-10">
+            @Html.DisplayTextFor(model => model.Email)
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Location)</label>
+        <div class="col-sm-10">
+            @Html.DisplayTextFor(model => model.Location)
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Notes)</label>
+        <div class="col-sm-4">
+            @Html.DisplayTextFor(model => model.Notes)
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.ContractDate)</label>
+        <div class="col-sm-10">
+           @string.Format("{0:dd-MMM-yyyy}", Model.ContractDate)
+             
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.CustomerType)</label>
+        <div class="col-sm-10">
+            @Html.DisplayTextFor(model => model.CustomerTypeDisplayName)
+        </div>
+    </div>
+
+    <div class="row">
+
+        <p class="vertical-gap">
+
+            <input type="button" onclick="location.href = '@Url.Action("Edit", "Customer", new { id = Model.CustomerID })'; return false;" class="btn btn-primary" value="Edit" />
+            <input type="button" onclick="location.href = '@Url.Action("Delete", "Customer", new { id = Model.CustomerID })'; return false;" class="btn btn-primary" value="Delete" />
+            <input type="button" onclick="location.href = '@Url.Action("Index", "Customer")'; return false;" class="btn btn-default" value="Back" />
+
+        </p>
+        <p class="vertical-gap">
+
+            
+        </p>
+    </div>
+</fieldset>
+
