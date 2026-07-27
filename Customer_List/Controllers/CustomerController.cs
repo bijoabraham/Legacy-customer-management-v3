@@ -1,4 +1,4 @@
-﻿using CustomersWebDemo.DbAccess;
+using CustomersWebDemo.DbAccess;
 using CustomersWebDemo.Models;
 using System;
 using System.Collections.Generic;
@@ -37,12 +37,14 @@ namespace CustomersWebDemo.Controllers
     
     
     
+    [HttpGet]
     public IActionResult Index()
     {
         return Ok();
     }
     
     
+    [HttpGet("filter")]
     public IActionResult Filter(string nameFilter, string emailFilter,
         string locationFilter, int? typeFilter, int page)
     {
@@ -124,6 +126,7 @@ namespace CustomersWebDemo.Controllers
     
     
     
+    [HttpGet("{id}")]
     public IActionResult Details(int id)
     {
         
