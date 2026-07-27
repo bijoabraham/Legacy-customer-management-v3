@@ -1,28 +1,34 @@
-﻿using CustomersWebDemo.Models;
+using CustomersWebDemo.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Web;
 
 namespace CustomersWebDemo.DbAccess
 {
     public class CustomerEntitiesDbContext : DbContext
     {
-        public CustomerEntitiesDbContext() : base("CustomersDB") { }
-
-            public DbSet<Customer> Customers { get; set; }
+        public CustomerEntitiesDbContext() { }
+        public CustomerEntitiesDbContext(DbContextOptions<CustomerEntitiesDbContext> options) : base(options) { }
         
-            public virtual void Commit()
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
             {
-                base.SaveChanges();
+                optionsBuilder.UseSqlServer("Server=localhost;Database=Customers;Trusted_Connection=True;TrustServerCertificate=True;");
             }
+        }
 
-            protected override void OnModelCreating(DbModelBuilder modelBuilder)
-            {
-                modelBuilder.Configurations.Add(new CustomerConfiguration());
-                
-            }
-        
+        public DbSet<Customer> Customers { get; set; }
+    
+        public virtual void Commit()
+        {
+            this.SaveChanges();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+        }
     }
 }
